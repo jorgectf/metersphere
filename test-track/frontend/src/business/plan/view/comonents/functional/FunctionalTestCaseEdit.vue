@@ -172,6 +172,7 @@ import {testPlanTestCaseEdit, testPlanTestCaseGet} from "@/api/remote/plan/test-
 import {testPlanEditStatus} from "@/api/remote/plan/test-plan";
 import {getTestTemplate} from "@/api/custom-field-template";
 import {checkProjectPermission} from "@/api/testCase";
+import {openCaseEdit} from "@/business/case/test-case";
 
 export default {
   name: "FunctionalTestCaseEdit",
@@ -519,13 +520,7 @@ export default {
       this.relationGraphOpen = val;
     },
     openTestTestCase(item) {
-      let TestCaseData = this.$router.resolve(
-        {
-          path: '/track/case/all',
-          query: {redirectID: getUUID(), dataType: "testCase", dataSelectRange: item.caseId, projectId: item.projectId}
-        }
-      );
-      window.open(TestCaseData.href, '_blank');
+      openCaseEdit(item.caseId, null, this);
     },
     addPLabel(str) {
       return "<p>" + str + "</p>";

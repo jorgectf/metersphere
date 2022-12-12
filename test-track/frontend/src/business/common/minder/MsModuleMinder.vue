@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div v-loading="loading" class="minder" :class="{'full-screen': isFullScreen}">
-      <ms-full-screen-button :is-full-screen.sync="isFullScreen"/>
+    <div v-loading="loading" :class="[isFullScreen ? 'full-screen' : 'minder']">
+      <ms-full-screen-button :is-full-screen.sync="isFullScreen" @toggleMinderFullScreen="toggleMinderFullScreen"/>
       <minder-editor
         v-if="isActive"
         class="minder-container"
@@ -113,7 +113,7 @@ export default {
     }
   },
   created() {
-    this.height = document.body.clientHeight - 285;
+    this.height = document.body.clientHeight - 325;
   },
   destroyed() {
     minderPageInfoMap.clear();
@@ -298,6 +298,9 @@ export default {
         template: "default"
       };
       return importJson;
+    },
+    toggleMinderFullScreen(isFullScreen) {
+      this.$emit("toggleMinderFullScreen", isFullScreen)
     }
   }
 }
@@ -305,13 +308,27 @@ export default {
 
 <style scoped>
 .minder-container :deep(.save-btn) {
-  right: 30px;
+  right: 24px;
   bottom: auto;
-  top: 30px;
+  top: 24px;
+  width: 80px;
+  height: 32px;
+  border-radius: 4px;
+}
+
+.minder-container :deep(.save-btn span) {
+  font-family: 'PingFang SC';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  position: relative;
+  top: -8px;
 }
 
 .minder {
   position: relative;
+  top: 35px
 }
 
 .fulls-screen-btn {
@@ -324,15 +341,17 @@ export default {
 .full-screen {
   position: fixed;
   top: 0px;
-  left: 0px;
-  width: 100%;
+  left: 42px;
+  padding: 12px;
+  width: calc(100% - 50px);
   background: white;
   height: 100vh;
-  z-index: 2;
+  z-index: 1999;
+  max-height: calc(100vh);
 }
 
 .full-screen :deep(.minder-container) {
-  height: calc(100vh - 109px) !important;
+  height: calc(100vh - 149px) !important;
 }
 
 .full-screen .fulls-screen-btn {
@@ -341,5 +360,14 @@ export default {
 
 :deep(*[disabled]) {
   opacity: 0.7 !important;
+}
+
+:deep(.minder-container.km-editor.km-view.focus) {
+  min-height: 422px;
+  background: #F5F6F7!important;
+}
+
+:deep(.menu-container) {
+  height: 60px;
 }
 </style>

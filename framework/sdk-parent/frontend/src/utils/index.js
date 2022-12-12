@@ -305,6 +305,17 @@ export function byteToSize(bytes) {
   return (bytes / Math.pow(k, i)).toPrecision(3) + " " + sizes[i];
 }
 
+export function sizeToByte(size) {
+  let k = 1024,
+    sizeUnits = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+  for (let i = 1; i++; i < sizeUnits.length) {
+    let unit = sizeUnits[i];
+    if (size.indexOf(unit) !== -1) {
+      return size.toString().replace(unit, "") * Math.pow(k, i)
+    }
+  }
+}
+
 export function getTypeByFileName(filename) {
   if (filename === "") {
     return "";
